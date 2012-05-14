@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Can I be on the James River today?</title>
+	<style type="text/css">
+		body { text-align: center; font-family: sans-serif; }
+		#answer { text-transform: uppercase; font-weight: bold; font-size: 6em; }
+		.status0, .status0 a { background-color: #060; color: white; }
+		.status1, .status1 a { background-color: #ff0; color: black; }
+		.status2, .status2 a { background-color: #d00; color: white; }
+	</style>
+</head>
+<body class="{{ class }}">
+	<p>Can I be on the James River today?</p>
+	<p id="answer">{{ text }}</p>
+	<p>
+		<a href="http://water.weather.gov/ahps2/hydrograph.php?wfo=akq&amp;gage=rmdv2">Source</a> | 
+		<a href="/about">About</a>
+	</p>
+</body>
+</html>
