@@ -1,0 +1,4 @@
+cron:
+- description: fetch river level
+  url: /
+  schedule: every 30 minutes
