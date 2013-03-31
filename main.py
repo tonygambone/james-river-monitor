@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 import webapp2, jinja2, os, logging
+from datetime import datetime
+from tz import Eastern
 from google.appengine.api import memcache
 
 j = jinja2.Environment(
@@ -31,7 +33,8 @@ class MainHandler(webapp2.RequestHandler):
 
 				v = {
 					'text': text,
-					'class': 'status'+str(status)
+					'class': 'status'+str(status),
+					'time': datetime.now(Eastern).strftime('%B %d at %I:%M %p %Z')
 					}
 				t = j.get_template('main.html')
 				output = t.render(v)
