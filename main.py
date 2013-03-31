@@ -43,13 +43,6 @@ class MainHandler(webapp2.RequestHandler):
 			self.response.out.write(output)
 		except:
 			logging.exception('Error occurred while processing the request')
-			from google.appengine.api import mail
-			import sys, traceback
-			et, ev, etb = sys.exc_info()
-			mail.send_mail(sender="James River Monitor App <tonygambone@gmail.com>",
-				to="Tony Gambone <tonygambone@gmail.com>",
-				subject="Application Error",
-				body=''.join(traceback.format_exception(et, ev, etb)))
 			self.response.out.write(
 				"""Something went wrong, sorry. Check the 
 				<a href="http://water.weather.gov/ahps2/hydrograph.php?wfo=akq&gage=rmdv2">river levels</a>
