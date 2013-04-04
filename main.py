@@ -37,6 +37,9 @@ class MainHandler(webapp2.RequestHandler):
   def get_content(self):
     """Get the HTML output for the main page."""
     result = memcache.get(Key.WaterLevelStatus)
+    if result is None:
+      DataHandler().fetch_and_cache()
+      result = memcache.get(Key.WaterLevelStatus)
     status = result['status']
     if status == Status.Permit:
       logging.info("Status is Permit")
