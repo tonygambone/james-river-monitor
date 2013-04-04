@@ -36,12 +36,12 @@ DSTEND_1987_2006 = datetime(1, 10, 25, 1)
 DSTSTART_1967_1986 = datetime(1, 4, 24, 2)
 DSTEND_1967_1986 = DSTEND_1987_2006
 
-class USTimeZone(tzinfo):
-  def __init__(self, hours, reprname, stdname, dstname):
-    self.stdoffset = timedelta(hours=hours)
-    self.reprname = reprname
-    self.stdname = stdname
-    self.dstname = dstname
+class EasternTimeZone(tzinfo):
+  def __init__(self):
+    self.stdoffset = timedelta(hours=-5)
+    self.reprname = "Eastern"
+    self.stdname = "EST"
+    self.dstname = "EDT"
 
   def __repr__(self):
     return self.reprname
@@ -85,4 +85,4 @@ class USTimeZone(tzinfo):
     else:
       return ZERO
           
-Eastern = USTimeZone(-5, "Eastern",  "EST", "EDT")
+Eastern = EasternTimeZone()

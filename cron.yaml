@@ -1,4 +1,4 @@
 cron:
 - description: fetch river level
-  url: /
+  url: /fetch
   schedule: every 30 minutes
