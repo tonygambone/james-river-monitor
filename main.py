@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import webapp2, jinja2, os, logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from tz import Eastern
 from data import DataHandler, WarmupHandler
@@ -19,13 +19,9 @@ class MainHandler(webapp2.RequestHandler):
       self.response.out.write(self.get_content())
     except:
       logging.exception('Error occurred while processing the request')
-      from google.appengine.api import mail
       import sys, traceback
       et, ev, etb = sys.exc_info()
-      mail.send_mail(sender="James River Monitor App <tonygambone@gmail.com>",
-        to="Tony Gambone <tonygambone@gmail.com>",
-        subject="Application Error",
-        body=''.join(traceback.format_exception(et, ev, etb)))
+      self.send_admin_message("Application Error", ''.join(traceback.format_exception(et, ev, etb)))
       self.response.out.write(
         """Something went wrong, sorry. Check the
         <a href="http://water.weather.gov/ahps2/hydrograph.php?wfo=akq&gage=rmdv2">river levels</a>
@@ -40,6 +36,8 @@ class MainHandler(webapp2.RequestHandler):
     if result is None:
       DataHandler().fetch_and_cache()
       result = memcache.get(Key.WaterLevelStatus)
+    if (result['time'] - datetime.now(Eastern)) > timedelta(hours=3):
+      send_admin_message("Stale Data", "Data is more than three hours old")
     status = result['status']
     if status == Status.Permit:
       logging.info("Status is Permit")
@@ -57,6 +55,13 @@ class MainHandler(webapp2.RequestHandler):
     }
     t = j.get_template('main.html')
     return t.render(v)
+
+  def send_admin_message(self, subject, body):
+    from google.appengine.api import mail
+    mail.send_mail(sender="James River Monitor App <tonygambone@gmail.com>",
+        to="Tony Gambone <tonygambone@gmail.com>",
+        subject=subject,
+        body=body)
 
 app = webapp2.WSGIApplication([
   ('/', MainHandler),
